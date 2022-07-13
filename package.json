@@ -1,0 +1,29 @@
+{
+  "name": "ts-i18next-type",
+  "version": "1.0.0",
+  "description": "A generator for i18next translation file type",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "typescript",
+    "i18next",
+    "i18n"
+  ],
+  "author": "IronLu233",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-sucrase": "^4.0.4",
+    "@types/ejs": "^3.1.1",
+    "rollup": "^2.76.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-ejs": "^2.3.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "ejs": "^3.1.8"
+  }
+}

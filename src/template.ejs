@@ -1,0 +1,40 @@
+<!--
+author:        IronLu233 <lrironsora@gmail.com>
+date:          2022-07-13 21:06:34
+-->
+
+<% if(inline) {%>
+
+<% } else { %>
+<%- `type TranslationFile = ` + translationFilePaths.map(path => `typeof import("${path.replace(/\\/g, '\\\\')}")`).join(' &\n')  %>
+
+type TranslationPaths<T, Prefix extends string = ""> = keyof {
+  [K in keyof T as K extends string
+    ? K extends keyof {
+        [K in keyof T as T[K] extends string
+          ? K extends string
+            ? K
+            : never
+          : never]: never;
+      }
+      ? Prefix extends ""
+        ? K
+        : `${Prefix}.${K}`
+      : K extends keyof {
+          [K in keyof T as T[K] extends Record<any, any> ? K : never]: never;
+        }
+      ? Prefix extends ""
+        ? TranslationPaths<T[K], K>
+        : TranslationPaths<T[K], `${Prefix}.${K}`>
+      : never
+    : never]: never;
+};
+
+<% } %>
+
+<% if (global) { %>
+<%- `declare global {
+  const ${global === true ? 'TranslationKey' : global}: TranslationPaths<TranslationFile>
+}` 
+%>
+<% } %>
