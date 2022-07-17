@@ -1,12 +1,9 @@
-<!--
-author:        IronLu233 <lrironsora@gmail.com>
-date:          2022-07-13 21:06:34
--->
-
-<% if(inline) {%>
-
+<%
+  const { inlinePaths, translationFilePaths, global, strict } = locals;
+%>
+<% if(inlinePaths && inlinePaths.length > 0) {%>
+<%- `type ${global} = ${inlinePaths.map(it => `'${it}'`).join(' | ')}` %>
 <% } else { %>
-<%- `type TranslationFile = ` + translationFilePaths.map(path => `typeof import("${path.replace(/\\/g, '\\\\')}")`).join(' &\n')  %>
 
 type TranslationPaths<T, Prefix extends string = ""> = keyof {
   [K in keyof T as K extends string
@@ -29,12 +26,129 @@ type TranslationPaths<T, Prefix extends string = ""> = keyof {
       : never
     : never]: never;
 };
+<%- `type ${global} = \n` + translationFilePaths.map(path => `TranslationPaths<typeof import("${path.replace(/\\/g, '\\\\')}")>`).join(' |\n')  %>
 
 <% } %>
 
 <% if (global) { %>
 <%- `declare global {
-  const ${global === true ? 'TranslationKey' : global}: TranslationPaths<TranslationFile>
+  const ${global}: ${global}
 }` 
 %>
 <% } %>
+
+
+import * as i18next from "i18next";
+
+declare module "i18next" {
+  export interface TFunction {
+    // basic usage
+    <
+      TResult extends i18next.TFunctionResult = string,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = i18next.StringMap
+    >(
+      key: TKeys | TKeys[]
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult<object>,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & {
+        returnDetails: true;
+        returnObjects: true;
+      }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnDetails: true }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = object,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnObjects: true }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> | string
+    ): TResult;
+    // overloaded usage
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends <%- global %>,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      defaultValue?: string,
+      options?: TOptions<TInterpolationMap> | string
+    ): TResult;
+
+
+    <% if(!strict) { %>
+        // basic usage
+    <
+    // not strict mode, allow other string keys
+      TResult extends TFunctionResult = string,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult<object>,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnDetails: true; returnObjects: true },
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnDetails: true },
+    ): TResult;
+    <
+      TResult extends TFunctionResult = object,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnObjects: true },
+    ): TResult;
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> | string,
+    ): TResult;
+    // overloaded usage
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap,
+    >(
+      key: TKeys | TKeys[],
+      defaultValue?: string,
+      options?: TOptions<TInterpolationMap> | string,
+    ): TResult;
+    <% } %>
+  }
+}

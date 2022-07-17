@@ -2,9 +2,13 @@
   "name": "ts-i18next-type",
   "version": "1.0.0",
   "description": "A generator for i18next translation file type",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "i18next-ts": "dist/cli.js"
+  },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c -m inline",
+    "watch": "rollup -c -w -m inline",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,12 +22,24 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-sucrase": "^4.0.4",
     "@types/ejs": "^3.1.1",
+    "@types/glob": "^7.2.0",
+    "@types/glob-watcher": "^5.0.2",
+    "@types/yargs": "^17.0.10",
+    "i18next": "^21.8.14",
     "rollup": "^2.76.0",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-ejs": "^2.3.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "ejs": "^3.1.8"
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@types/lodash.topairs": "^4.3.7",
+    "@types/mkdirp": "^1.0.2",
+    "ejs": "^3.1.8",
+    "glob": "^8.0.3",
+    "glob-watcher": "^5.0.5",
+    "lodash.topairs": "^4.3.0",
+    "mkdirp": "^1.0.4",
+    "yargs": "^17.5.1"
   }
 }

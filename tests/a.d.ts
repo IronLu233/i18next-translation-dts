@@ -27,3 +27,65 @@ type TranslationPaths<T, Prefix extends string = ""> = keyof {
 declare global {
   let TranslationKey: TranslationPaths<TranslationFile>;
 }
+
+import * as i18next from "i18next";
+
+declare module "i18next" {
+  export interface TFunction {
+    // basic usage
+    <
+      TResult extends i18n.TFunctionResult = string,
+      TKeys extends i18n.TFunctionKeys = TranslationPaths<TranslationFile>,
+      TInterpolationMap extends object = ii18n.StringMap
+    >(
+      key: TKeys | TKeys[]
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult<object>,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & {
+        returnDetails: true;
+        returnObjects: true;
+      }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = TFunctionDetailedResult,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnDetails: true }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = object,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> & { returnObjects: true }
+    ): TResult;
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      options?: TOptions<TInterpolationMap> | string
+    ): TResult;
+    // overloaded usage
+    <
+      TResult extends TFunctionResult = string,
+      TKeys extends TFunctionKeys = string,
+      TInterpolationMap extends object = StringMap
+    >(
+      key: TKeys | TKeys[],
+      defaultValue?: string,
+      options?: TOptions<TInterpolationMap> | string
+    ): TResult;
+  }
+}
+
+i18next.t("title");
