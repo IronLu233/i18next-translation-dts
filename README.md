@@ -12,7 +12,9 @@ yarn add ts-i18next-type
 ## Usage
 ### CLI
 ``` sh
-ts-i18next "**/en.json"
+ts-i18next "**/translation/*.json"
+# watch mode
+ts-i18next "**/translation/*.json" --watch
 ```
 
 ### API

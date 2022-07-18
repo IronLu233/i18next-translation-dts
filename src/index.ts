@@ -5,11 +5,12 @@
 
 import templateFunction from "./template.ejs";
 import toPairs from "lodash.topairs";
+import debounce from "lodash.debounce";
 import glob from "glob";
 import mkdirp from "mkdirp";
 import path from "path";
 import { writeFile } from "fs/promises";
-import watch from "glob-watcher";
+import chokidar from "chokidar";
 
 interface Translation {
   [key: string]: string | Translation;
@@ -104,19 +105,30 @@ export async function writeTypeDefinition(source: string, outputDir: string) {
   const outputDTSPath = path.join(outputDir, "index.d.ts");
   // const outputPkgPath = path.join(outputDir, "package.json");
   await writeFile(outputDTSPath, source);
-  // await writeFile(
-  //   outputPkgPath,
-  //   JSON.stringify({ name: "i18next-typescript-dts", types: "index.d.ts" })
-  // );
 }
 
 export async function watchTypeDefinition(
   globPattern: string,
-  outputDir = "node_nodules/@types/i18next-typescript-dts"
+  outputDir = "node_modules/@types/i18next-typescript-dts"
 ) {
-  const watcher = watch(globPattern);
-  watcher.addListener("change", async (path: string) => {
+  const watcher = chokidar.watch(globPattern);
+  const paths = new Set<string>();
+
+  const rebuild = debounce(async () => {
+    const source = await getI18nextDefinition(Array.from(paths), {});
+    await writeTypeDefinition(source, outputDir);
+  }, 500);
+
+  const handler = async (p: string) => {
     await buildTypeDefinition(globPattern, outputDir);
+    paths.add(path.resolve(process.cwd(), p));
+    rebuild();
+  };
+
+  watcher.addListener("add", handler);
+  watcher.addListener("unlink", (p) => {
+    paths.delete(path.resolve(process.cwd(), p));
+    rebuild();
   });
 }
 

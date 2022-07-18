@@ -5,7 +5,7 @@
 
 import yargs from "yargs";
 
-import { buildTypeDefinition } from "./index";
+import { buildTypeDefinition, watchTypeDefinition } from "./index";
 
 yargs.positional("pattern", {
   describe: "The glob file pattern to your localization file",
@@ -34,9 +34,13 @@ yargs.help();
 const argv = yargs.argv as Awaited<typeof yargs.argv>;
 
 const globPatterns = argv._[0] as string;
-const { inline, strict, outDir } = argv as Record<string, any>;
+const { inline, strict, outDir, watch } = argv as Record<string, any>;
 
-buildTypeDefinition(globPatterns, outDir, {
-  inline,
-  strict,
-});
+if (watch) {
+  watchTypeDefinition(globPatterns, outDir);
+} else {
+  buildTypeDefinition(globPatterns, outDir, {
+    inline,
+    strict,
+  });
+}
