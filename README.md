@@ -1,12 +1,12 @@
-# ts-i18next-type
+# i18next-translation-dts
 
 A i18next translation key type definition generator.
 
 ## install
 ``` sh
-npm i ts-i18next-type
+npm i i18next-translation-dts
 # or use yarn
-yarn add ts-i18next-type
+yarn add i18next-translation-dts
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ i18next-dts "**/translation/*.json" --watch
 
 ### API(TBD)
 ``` javascript
-import { getI18nextDefinition, generateI18nextDefinitionFile } from 'ts-i18next-type'
+import { getI18nextDefinition, generateI18nextDefinitionFile } from 'i18next-translation-dts'
 getI18nextDefinition()
 
 generateI18nextDefinitionFile()
