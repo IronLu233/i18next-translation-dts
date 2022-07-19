@@ -1,20 +1,22 @@
 {
-  "name": "ts-i18next-type",
-  "version": "0.0.1",
-  "description": "A generator for i18next translation file type",
+  "name": "i18next-translation-dts",
+  "version": "0.0.2",
+  "description": "A generator for i18next translation type definition",
   "main": "dist/index.js",
   "bin": {
-    "i18next-ts": "dist/cli.js"
+    "i18next-dts": "dist/cli.js"
   },
   "scripts": {
     "build": "rollup -c -m inline",
     "watch": "rollup -c -w -m inline",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "typescript",
     "i18next",
-    "i18n"
+    "i18n",
+    "typescript definition"
   ],
   "author": "IronLu233",
   "license": "MIT",

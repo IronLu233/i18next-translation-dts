@@ -1,1 +1,5 @@
 tests
+.vscode
+tsconfig.json
+rollup.config.js
+pnpm-lock.yaml

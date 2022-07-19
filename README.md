@@ -12,12 +12,12 @@ yarn add ts-i18next-type
 ## Usage
 ### CLI
 ``` sh
-ts-i18next "**/translation/*.json"
+i18next-dts "**/translation/*.json"
 # watch mode
-ts-i18next "**/translation/*.json" --watch
+i18next-dts "**/translation/*.json" --watch
 ```
 
-### API
+### API(TBD)
 ``` javascript
 import { getI18nextDefinition, generateI18nextDefinitionFile } from 'ts-i18next-type'
 getI18nextDefinition()
